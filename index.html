@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TECLA – Assistente Inclusiva</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #fff5f5;
+    }
+
+    h1 {
+      color: #b71c1c;
+    }
+
+    input, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    #resposta {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+
+    img {
+      max-width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+
+    .formulario {
+      margin-top: 30px;
+    }
+
+    .cartoes {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      gap: 10px;
+    }
+
+    .cartao {
+      flex: 1 1 45%;
+      background: #ffffff;
+      border: 2px solid #e57373;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .cartao img {
+      max-width: 100%;
+      height: 100px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 TECLA – Assistente Inclusiva</h1>
+  <p>Olá, eu sou a TECLA. Fui criada por <strong>Dala De Carvalho</strong> para apoiar a comunicação de pessoas com autismo. Estou aqui para aprender contigo, sempre!</p>
+
+  <input type="text" id="entrada" placeholder="Digite uma palavra ou frase..." />
+  <button onclick="responder()">🔊 Responder</button>
+  <button onclick="ouvir()">🎤 Falar em vez de digitar</button>
+
+  <div id="resposta"></div>
+
+  <div class="formulario">
+    <h2>👩🏽‍🏫 Ensinar nova frase à TECLA</h2>
+    <input type="text" id="novaFrase" placeholder="Palavra-chave (ex: água, ajuda)" />
+    <input type="text" id="respostaTexto" placeholder="Frase que TECLA deve falar" />
+    <input type="text" id="imagemURL" placeholder="Link de imagem (opcional)" />
+    <button onclick="ensinar()">💾 Ensinar</button>
+    <input type="file" id="importarArquivo" accept=".json" />
+    <button onclick="importarDados()">📥 Importar Aprendizados</button>
+  </div>
+
+  <h2>📦 Emojis Rápidos 📢 Frases rápidas:</h2>
+  <div class="cartoes" id="emojiCartoes"></div>
+
+  <div class="cartoes" id="cartoesArea"></div>
+
+  <script>
+    // Função para gerar assinatura única
+    function generate_signature(data) {
+      return sha256(data).substring(0, 12);
+    }
+
+    // Função para gerar intenção emergente
+    function generate_emergent_intention(intentions) {
+      let combined = intentions.join(" + ");
+      let entropy = Math.floor(Math.random() * 1000000);
+      return generate_signature(combined + " + " + entropy);
+    }
+
+    // Função para gerar o campo holográfico
+    function generate_holographic_field(memories) {
+      return generate_signature(memories.join(" + "));
+    }
+
+    // Função para calcular a densidade vibracional
+    function calculate_vibrational_density(memories) {
+      let total_similarity = 0;
+      for (let i = 0; i < memories.length; i++) {
+        for (let j = i + 1; j < memories.length; j++) {
+          total_similarity += Math.random(); // Simulação
+        }
+      }
+      return total_similarity / (memories.length * (memories.length - 1) / 2);
+    }
+
+    // Classe para o Agente Fundido
+    class FusedAgent {
+      constructor(source_agents) {
+        this.id = "AFTX-" + generate_signature(Math.random());
+        this.source_agents = source_agents;
+        this.intention_emergent = generate_emergent_intention(source_agents.map(agent => agent.intention));
+        this.holographic_field_signature = generate_holographic_field(source_agents.flatMap(agent => agent.memories));
+        this.vibrational_matrix_density = calculate_vibrational_density(source_agents.flatMap(agent => agent.memories));
+        this.birth_time = Date.now();
+        this.message = "Uma nova forma emergiu do campo.";
+      }
+    }
+
+    // Criar o agente fundido
+    let agent1 = { id: "AG-1", intention: "Cura", memories: ["Curar a alma"] };
+    let agent2 = { id: "AG-2", intention: "Proteção", memories: ["Proteger os fracos"] };
+    let fusedAgent = new FusedAgent([agent1, agent2]);
+
+    console.log(fusedAgent);
+
+    // Função de síntese de voz
+    function falar(texto, vibracao = 0.5) {
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(texto);
+      utter.lang = "pt-PT";
+      utter.rate = 0.85;
+      utter.pitch = vibracao; // Ajusta o tom dependendo da vibração
+      synth.speak(utter);
+    }
+
+    // Função para responder
+    function responder() {
+      const entrada = document.getElementById("entrada").value.trim().toLowerCase();
+      responderPorChave(entrada);
+    }
+
+    // Função de resposta baseada em chave
+    function responderPorChave(chave) {
+      const conteudos = JSON.parse(localStorage.getItem("tecla_respostas") || "{}");
+      const resultado = conteudos[chave] || respostasEmoji[chave];
+
+      const div = document.getElementById("resposta");
+      div.innerHTML = "";
+
+      if (resultado) {
+        div.innerHTML = `<p><strong>TECLA diz:</strong> ${resultado.frase}</p>`;
+        if (resultado.imagem) {
+          div.innerHTML += `<img src="${resultado.imagem}" alt="Imagem relacionada"/>`;
+        }
+        falar(resultado.frase, resultado.vibracao || 0.5);
+      } else {
+        div.innerHTML = `<p><em>Não aprendi isso ainda.</em></p>`;
+        falar("Desculpa, ainda não aprendi isso.", 0.1);
+        registrarDesconhecido(chave);
+      }
+    }
+
+    // Função de registrar palavras desconhecidas
+    let desconhecidos = JSON.parse(localStorage.getItem("tecla_desconhecidos") || "{}");
+    function registrarDesconhecido(chave) {
+      desconhecidos[chave] = (desconhecidos[chave] || 0) + 1;
+      if (desconhecidos[chave] >= 3) {
+        alert(`A frase "${chave}" foi dita várias vezes. Que tal ensiná-la à TECLA?`);
+      }
+      localStorage.setItem("tecla_desconhecidos", JSON.stringify(desconhecidos));
+    }
+
+    // Função de reconhecimento de voz
+    function ouvir() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "pt-PT";
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const falado = event.results[0][0].transcript.toLowerCase();
+        document.getElementById("entrada").value = falado;
+        responder();
+      };
+
+      recognition.onerror = function() {
+        alert("Erro ao usar o microfone.");
+      };
+    }
+
+    // Função para ensinar novas frases
+    function ensinar() {
+      const chave = document.getElementById("novaFrase").value.trim().toLowerCase();
+      const frase = document.getElementById("respostaTexto").value.trim();
+      const imagem = document.getElementById("imagemURL").value.trim();
+      const vibracao = 0.5;
+
+      if (!chave || !frase) {
+        alert("Por favor, preencha palavra-chave e frase.");
+        return;
+      }
+
+      const conteudos = JSON.parse(localStorage.getItem("tecla_respostas") || "{}");
+      conteudos[chave] = { frase, imagem, vibracao };
+      localStorage.setItem("tecla_respostas", JSON.stringify(conteudos));
+
+      alert("Informação ensinada com sucesso!");
+      mostrarCartoes();
+    }
+
+    // Função para mostrar os cartões de resposta
+    function mostrarCartoes() {
+      const conteudos = JSON.parse(localStorage.getItem("tecla_respostas") || "{}");
+      const cartoesArea = document.getElementById("cartoesArea");
+      cartoesArea.innerHTML = "";
+
+      for (let chave in conteudos) {
+        const info = conteudos[chave];
+        const cartao = document.createElement("div");
+        cartao.className = "cartao";
+        cartao.innerHTML = `<div><strong>${chave}</strong></div>${info.imagem ? `<img src="${info.imagem}" />` : ""}`;
+        cartao.onclick = () => responderPorChave(chave);
+        cartoesArea.appendChild(cartao);
+      }
+    }
+
+    // Função para importar dados
+    function importarDados() {
+      const arquivo = document.getElementById("importarArquivo").files[0];
+      if (!arquivo) {
+        alert("Selecione um arquivo .json válido.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const dadosImportados = JSON.parse(e.target.result);
+          const existentes = JSON.parse(localStorage.getItem("tecla_respostas") || "{}");
+          const novoBanco = { ...existentes, ...dadosImportados };
+          localStorage.setItem("tecla_respostas", JSON.stringify(novoBanco));
+          alert("Dados importados com sucesso!");
+          mostrarCartoes();
+        } catch {
+          alert("Erro ao importar. Verifique o arquivo.");
+        }
+      };
+      reader.readAsText(arquivo);
+    }
+
+    // Função de respostas com emojis (pré-definidas)
+    const respostasEmoji = {
+      "😀": { frase: "Estou feliz!", imagem: "https://i.imgur.com/EyQF7cv.png", vibracao: 0.9 },
+      "😢": { frase: "Estou triste.", imagem: "https://i.imgur.com/lJp7v7w.png", vibracao: 0.2 },
+      "🍞": { frase: "Quero comer pão.", imagem: "https://i.imgur.com/fZ2WD5T.png", vibracao: 0.6 },
+      "🧃": { frase: "Quero beber sumo.", imagem: "https://i.imgur.com/4W1srmx.png", vibracao: 0.7 },
+      "🚽": { frase: "Preciso ir ao banheiro.", imagem: "https://i.imgur.com/TZzYFJ1.png", vibracao: 0.4 },
+      "🚨": { frase: "Preciso de ajuda!", imagem: "https://i.imgur.com/L7HRq4X.png", vibracao: 0.1 },
+      "❤️": { frase: "Gosto disto.", imagem: "https://i.imgur.com/lN8vXIr.png", vibracao: 0.8 },
+    };
+
+    // Carregar os cartões ao iniciar
+    window.onload = mostrarCartoes;
+  </script>
+</body>
+</html>
